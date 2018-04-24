@@ -7,6 +7,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Nfq\WeatherBundle\WeatherProviderInterface;
+use Symfony\Component\DependencyInjection\Reference;
 
 class NfqWeatherExtension extends Extension
 {
@@ -25,7 +26,7 @@ class NfqWeatherExtension extends Extension
         if (isset($config['providers']['delegating']['providers'])) {
             $providers = array();
             foreach ($config['providers']['delegating']['providers'] as $provider){
-                $providers[] = $container->getDefinition('nfq_weather.provider.'.$provider);
+                $providers[] = new Reference('nfq_weather.provider.'.$provider);
             }
             $container->getDefinition('nfq_weather.provider.delegating')
                 ->replaceArgument(0, $providers);
